@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'account'
+    'account',
+    'film',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cinema_db',
-        'USER': 'sezim',
+        'USER': 'hello',
         'PASSWORD': 1,
         'HOST': 'localhost',
         'PORT': 5432
