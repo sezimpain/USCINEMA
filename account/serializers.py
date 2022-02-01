@@ -8,11 +8,10 @@ class RegistrationSerializer(ModelSerializer):
     password = CharField(max_length=8)
     password_confirm = CharField(max_length=8)
 
+
     class Meta:
         model = User
-        fields = (
-            'email', 'password', 'password_confirm', 'username'
-        )
+        fields = ('email', 'password', 'password_confirm', 'username')
 
     def validate(self, data):
         password = data.get('password')
@@ -27,6 +26,36 @@ class RegistrationSerializer(ModelSerializer):
         user.create_activation_code()
         send_activation_code(user.email, user.activation_code)
         return user
+
+class ActivationSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'code')
+
+    email = EmailField(required=True)
+    code = CharField(required=True)
+
+    def validate(self, data):
+        email = data.get('email')
+        code = data.get('activation_code')
+        if not User.objects.filter(
+            email=email, activation_code=code
+        ).exists():
+            raise ValidationError(
+                "Пользователь не найден"
+            )
+        return data
+
+    def activate(self):
+        email = self.validated_data.get('email')
+        user = User.objects.get(email=email)
+        # получение одной записи с бд
+        user.is_active = True
+        user.activation_code = ''
+        user.save()
+
+
+
 
 class LoginSerializer(Serializer):
     email = EmailField(required=True)
