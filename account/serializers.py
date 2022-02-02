@@ -1,9 +1,8 @@
 from rest_framework.serializers import ModelSerializer, CharField, ValidationError, EmailField, Serializer
-from account.models import User
 from .utils import send_activation_code
-from django.contrib.auth import authenticate
-
-
+from django.contrib.auth import authenticate, get_user_model
+from rest_framework import serializers
+User = get_user_model()
 class RegistrationSerializer(ModelSerializer):
     password = CharField(max_length=8)
     password_confirm = CharField(max_length=8)
@@ -27,17 +26,13 @@ class RegistrationSerializer(ModelSerializer):
         send_activation_code(user.email, user.activation_code)
         return user
 
-class ActivationSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('email', 'code')
-
-    email = EmailField(required=True)
-    code = CharField(required=True)
+class ActivationSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    code = serializers.CharField(required=True)
 
     def validate(self, data):
         email = data.get('email')
-        code = data.get('activation_code')
+        code = data.get('code')
         if not User.objects.filter(
             email=email, activation_code=code
         ).exists():
