@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/sezim/makers/uscinema/env"
+VIRTUAL_ENV="/home/user/USCINEMA/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

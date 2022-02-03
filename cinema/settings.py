@@ -1,3 +1,4 @@
+import os.path
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_s0qht55t0921atjb7h$b2h-v%kv6nb@kucqyo$-bern&!nx+b'
@@ -7,7 +8,8 @@ ALLOWED_HOSTS = []
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication'
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend', ),
 }
 
 INSTALLED_APPS = [
@@ -19,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
     'account',
     'film',
 ]
@@ -59,8 +62,8 @@ WSGI_APPLICATION = 'cinema.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cinema_db',
-        'USER': 'sezim',
+        'NAME': 'cinema',
+        'USER': 'hello',
         'PASSWORD': 1,
         'HOST': 'localhost',
         'PORT': 5432
@@ -96,13 +99,22 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'account.User'
 
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'alibaevauulzhan@gmail.com'
+EMAIL_HOST_PASSWORD = '16395218uu'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'sezimpain@gmail.com'
-EMAIL_HOST_PASSWORD = 'uzumakisezim2003'
+EMAIL_USE_TLS = True
+
+
+
+
