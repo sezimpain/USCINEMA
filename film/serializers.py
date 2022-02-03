@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from film.models import Video, Category, VideoPlay, VideoReview
-
+from django.db.models import Avg
 
 class CategorySerializer(ModelSerializer):
     class Meta:
@@ -45,6 +45,10 @@ class VideoReviewSerializer(ModelSerializer):
         return product
 
         # SELECT * FROM a WHERE title = 'hello'
+
+    def get_count_rating(self):
+        count_rating = Video.objects.aggregate(average_rating=Avg('rating'))
+        return count_rating
 
     def validate_rating(self, rating):
         if rating not in range(1, 6):

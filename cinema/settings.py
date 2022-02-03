@@ -63,7 +63,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cinema',
-        'USER': 'hello',
+        'USER': 'sezim',
         'PASSWORD': 1,
         'HOST': 'localhost',
         'PORT': 5432
@@ -110,10 +110,11 @@ AUTH_USER_MODEL = 'account.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'alibaevauulzhan@gmail.com'
-EMAIL_HOST_PASSWORD = '16395218uu'
+EMAIL_HOST_USER = 'sezimpain@gmail.com'
+EMAIL_HOST_PASSWORD = 'uzumakisezim2003'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
 
 
 

@@ -1,6 +1,6 @@
 from django.core.validators import FileExtensionValidator
 from django.db import models
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 from account.models import User
 
 
@@ -31,4 +31,10 @@ class VideoReview(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name='reviews', null=True)
     text = models.TextField()
-    rating = models.PositiveIntegerField(default=1)
+    rating = models.PositiveIntegerField(default=1, validators=[
+            MaxValueValidator(5), MinValueValidator(1)])
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+   # def count_rating(self,rating):
+
+
