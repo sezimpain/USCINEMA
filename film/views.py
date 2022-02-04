@@ -16,7 +16,7 @@ from .service import FilmFilter
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [AllowAny, ]
+   # permission_classes = [AllowAny ]
 
 
 
@@ -66,6 +66,10 @@ class VideoViewSet(ModelViewSet):
         )
         return Response(serializer.data, status=200)
 
+
+
+
+
 class VideoPlayView(generics.ListCreateAPIView):
     queryset = VideoPlay.objects.all()
     serializer_class = VideoPlaySerializer
@@ -86,3 +90,4 @@ class VideoReviewViewSet(ModelViewSet):
     def get_serializer(self, *args, **kwargs):
         kwargs['context'] = self.get_serializer_context()
         return self.serializer_class(*args, **kwargs)
+

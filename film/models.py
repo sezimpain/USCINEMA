@@ -2,7 +2,7 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from account.models import User
-
+from django.db.models import Avg
 
 class Category(models.Model):
     slug = models.SlugField(max_length=100, primary_key=True)
@@ -16,6 +16,13 @@ class Video(models.Model):
     img = models.ImageField(upload_to='images', null=True)
     description = models.TextField()
 
+
+    #@property
+    #def rating_average(self):
+        #return self.reviews.aggregate(models.Avg('rating')).get('rating__avg')
+
+
+
     def __str__(self):
         return {self.title}
 
@@ -23,6 +30,7 @@ class VideoPlay(models.Model):
     film = models.FileField(upload_to='videos', null=True, blank=True,
                              validators=[FileExtensionValidator(allowed_extensions=['MOV', 'avi', 'mp4', 'webm', 'mkv'])])
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='videos')
+
 
 class VideoReview(models.Model):
     video = models.ForeignKey(Video,
@@ -35,6 +43,13 @@ class VideoReview(models.Model):
             MaxValueValidator(5), MinValueValidator(1)])
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-   # def count_rating(self,rating):
+
+
+
+    #def count_rating_average(self, rating):
+    #    reviews = self.reviews.all()
+    #    self.rating_average = reviews.aggregate(models.Avg('rating')).get('rating__avg')
+    #    self.save(self.rating_average)
+
 
 
