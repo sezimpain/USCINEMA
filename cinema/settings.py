@@ -25,7 +25,13 @@ INSTALLED_APPS = [
     'account',
     'film',
     'likes.apps.LikesConfig',
+    'social_django',
+    'drf_yasg',
+
 ]
+
+#SOCIAL_AUTH_FACEBOOK_KEY = YOUR_APP_KEY
+#SOCIAL_AUTH_FACEBOOK_SECRET = YOUR_APP_SECRET
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -86,6 +92,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.instagram.InstagramOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 
 LANGUAGE_CODE = 'en-us'
