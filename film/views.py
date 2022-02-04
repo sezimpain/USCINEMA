@@ -6,17 +6,18 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from account.permissions import IsActivePermission
 from film.models import Video, Category, VideoPlay, VideoReview
 from film.serializers import VideoSerializer, CategorySerializer, VideoPlaySerializer, VideoReviewSerializer
 
 from django_filters.rest_framework import DjangoFilterBackend
 from .service import FilmFilter
-
+from likes.mixins import LikedMixin
 
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-   # permission_classes = [AllowAny ]
+    permission_classes = [AllowAny, ]
 
 
 
@@ -29,7 +30,7 @@ class MyPaginationClass(PageNumberPagination):
         return super().get_paginated_response(data)
 
 
-class VideoViewSet(ModelViewSet):
+class VideoViewSet(ModelViewSet, LikedMixin):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
     pagination_class = MyPaginationClass
@@ -37,6 +38,9 @@ class VideoViewSet(ModelViewSet):
 
     filter_backends = (DjangoFilterBackend,)
     filterset_class = FilmFilter
+
+
+
 
     @action(detail=False, methods=['get'])
     def search(self, request, pk=None):
@@ -59,8 +63,8 @@ class VideoViewSet(ModelViewSet):
 
     @action(['GET'], detail=True)
     def reviews(self, request, pk=None):
-        product = self.get_object()
-        reviews = product.reviews.all()
+        video = self.get_object()
+        reviews = video.reviews.all()
         serializer = VideoReviewSerializer(
             reviews, many=True, context={'request': request}
         )
@@ -69,10 +73,10 @@ class VideoViewSet(ModelViewSet):
 
 
 
-
 class VideoPlayView(generics.ListCreateAPIView):
     queryset = VideoPlay.objects.all()
     serializer_class = VideoPlaySerializer
+
     def get_serializer_context(self):
         return {'request':self.request}
 
@@ -80,7 +84,7 @@ class VideoPlayView(generics.ListCreateAPIView):
 class VideoReviewViewSet(ModelViewSet):
     queryset = VideoReview.objects.all()
     serializer_class = VideoReviewSerializer
-    # permission_classes = [IsActivePermission]
+    permission_classes = [IsActivePermission]
 
     def get_serializer_context(self):
         return {

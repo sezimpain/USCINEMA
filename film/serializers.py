@@ -1,7 +1,10 @@
 from django.db.models import Avg
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
+
+import likes
 from film.models import *
+from likes.serializers import FanSerializer
 
 
 class CategorySerializer(ModelSerializer):
@@ -10,6 +13,7 @@ class CategorySerializer(ModelSerializer):
         fields = '__all__'
 
 class VideoSerializer(ModelSerializer):
+    is_fan = serializers.SerializerMethodField()
     class Meta:
         model = Video
         fields = "__all__"
@@ -18,8 +22,14 @@ class VideoSerializer(ModelSerializer):
         representation = super().to_representation(instance)
         representation['category'] = CategorySerializer(instance.category).data
         representation['rating'] = VideoReview.objects.all().aggregate(Avg('rating'))
-        representation['video'] = VideoPlaySerializer(instance.videos.all(), context=self.context, many=True).data
+        representation['body'] = VideoPlaySerializer(instance.videos.all(), context=self.context, many=True).data
+
         return representation
+
+    def get_is_fan(self, obj):
+
+        user = self.context.get('request').user
+        return likes.services.is_fan(obj, user)
 
 class VideoPlaySerializer(ModelSerializer):
     class Meta:
@@ -61,3 +71,4 @@ class VideoReviewSerializer(ModelSerializer):
         validated_data['author'] = user
         review = VideoReview.objects.create(**validated_data)
         return review
+
