@@ -1,25 +1,22 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from account.models import User
 from django.db.models import Avg
-
 class Category(models.Model):
     slug = models.SlugField(max_length=100, primary_key=True)
     name = models.CharField(max_length=150, unique=True)
     def __str__(self):
         return self.name
 
+
+
 class Video(models.Model):
     title = models.CharField(max_length=40, unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='films', default=None)
     img = models.ImageField(upload_to='images', null=True)
     description = models.TextField()
-
-
-    #@property
-    #def rating_average(self):
-        #return self.reviews.aggregate(models.Avg('rating')).get('rating__avg')
 
 
 
@@ -43,6 +40,7 @@ class VideoReview(models.Model):
             MaxValueValidator(5), MinValueValidator(1)])
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    likes = models.PositiveSmallIntegerField(default=0)
 
 
 

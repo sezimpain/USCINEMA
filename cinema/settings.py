@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'django_filters',
     'account',
     'film',
+    'likes.apps.LikesConfig',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +63,7 @@ WSGI_APPLICATION = 'cinema.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cinema',
+        'NAME': 'us_db',
         'USER': 'sezim',
         'PASSWORD': 1,
         'HOST': 'localhost',
@@ -114,8 +115,3 @@ EMAIL_HOST_USER = 'sezimpain@gmail.com'
 EMAIL_HOST_PASSWORD = 'uzumakisezim2003'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
-
-
-
-
